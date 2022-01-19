@@ -96,7 +96,9 @@ module Filterrific
           fp[key] = val.call
         when val.is_a?(Array)
           # type cast integers in the array
-          fp[key] = fp[key].map { |e| e =~ integer_detector_regex ? e.to_i : e }
+          fp[key] = fp[key].map do |e|
+            e.is_a?(String) && e =~ integer_detector_regex ? e.to_i : e
+          end
         when val.is_a?(Hash)
           # type cast Hash to OpenStruct so that nested params render correctly
           # in the form
